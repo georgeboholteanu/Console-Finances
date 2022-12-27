@@ -86,20 +86,37 @@ var finances = [
 ['Jan-2017', 138230],
 ['Feb-2017', 671099]
 ];
-let total = 0;
-let months= [];
-let pnl = [];
 
+
+var total = 0;
+var months= [];
+var pnl = [];
+
+// extract *finances* 2x dim array into single arrays
 for (i=0; i<finances.length; i++) {
     total += finances[i][1];
     months.push(finances[i][0]);
     pnl.push(finances[i][1]);
 }
 
+var higher_profit = Math.max.apply(null, pnl);
+var lower_profit = Math.min.apply(null, pnl);
+var average_profit = Math.round((pnl.reduce((a, b) => a + b, 0) / pnl.length));
+
+// return item in multi dim array *pnl* by specified item and index
+function return_item (sel_value, idx) {
+    for (i=0; i<pnl.length; i++) {
+        if (pnl[i] === sel_value){
+            return finances[i][idx];
+        }
+    }
+}
+
+
 console.log("Finanacial Analysis");
 console.log("----------------------------");
 console.log("Total Months: " + months.length);
-console.log("Total: " + total);
-console.log("Average Change: $" + Math.round((pnl.reduce((a, b) => a + b, 0) / pnl.length)*1000)/1000);
-console.log("Greatest Increase in Profits: " + Math.max.apply(null, pnl));
-console.log("Greatest Decrease in Profits: " + Math.min.apply(null, pnl));
+console.log("Total: $" + total);
+console.log("Average Change: $" + average_profit);
+console.log("Greatest Increase in Profits: " + return_item(higher_profit, 0) + " ($"+ return_item(higher_profit, 1) + ")");
+console.log("Greatest Decrease in Profits: " + return_item(lower_profit, 0) + " ($"+ return_item(lower_profit, 1) + ")");
