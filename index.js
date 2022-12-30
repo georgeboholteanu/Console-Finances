@@ -100,7 +100,8 @@ for (i=0; i<finances.length; i++) {
 }
 
 var higher_profit = Math.max.apply(null, pnl);
-var lower_profit = Math.min.apply(null, pnl);
+var lower_profit = Math.min(...pnl);
+
 
 // array with differences between values
 var deltas = pnl.reduce(function(r, e, i) {
