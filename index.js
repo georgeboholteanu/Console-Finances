@@ -92,7 +92,7 @@ var total = 0;
 var months= [];
 var pnl = [];
 
-// extract *finances* 2x dim array into single arrays
+// extract profits and losses to array and months to array
 for (i=0; i<finances.length; i++) {
     total += finances[i][1];
     months.push(finances[i][0]);
@@ -101,9 +101,17 @@ for (i=0; i<finances.length; i++) {
 
 var higher_profit = Math.max.apply(null, pnl);
 var lower_profit = Math.min.apply(null, pnl);
-var average_profit = Math.round((pnl.reduce((a, b) => a + b, 0) / pnl.length));
 
-// return item in multi dim array *pnl* by specified item and index
+// array with differences between values
+var deltas = pnl.reduce(function(r, e, i) {
+    if(pnl[i+1]) r.push(Number((pnl[i+1] - e).toFixed(2)));
+    return r;
+   }, [])
+
+var average_deltas = (deltas.reduce((a,b) => a+b, 0)/deltas.length).toFixed(2)
+
+
+// return item from multi dim array *finances by specified item and index in *pnl
 function return_item (sel_value, idx) {
     for (i=0; i<pnl.length; i++) {
         if (pnl[i] === sel_value){
@@ -112,11 +120,10 @@ function return_item (sel_value, idx) {
     }
 }
 
-
 console.log("Finanacial Analysis");
 console.log("----------------------------");
 console.log("Total Months: " + months.length);
 console.log("Total: $" + total);
-console.log("Average Change: $" + average_profit);
+console.log("Average Change: $" + average_deltas);
 console.log("Greatest Increase in Profits: " + return_item(higher_profit, 0) + " ($"+ return_item(higher_profit, 1) + ")");
 console.log("Greatest Decrease in Profits: " + return_item(lower_profit, 0) + " ($"+ return_item(lower_profit, 1) + ")");
